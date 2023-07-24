@@ -82,7 +82,7 @@ void Cmfcproject1View::OnDraw(CDC* /*pDC*/)
 	::glPushMatrix();
 	::glPointSize(10.0f);
 	::glBegin(GL_POINTS);
-	::glVertex3f(x, y, 0.0f);
+	::glVertex3f(x, y, z);
 	::glEnd();
 	::glPopMatrix();
 
@@ -533,7 +533,15 @@ void Cmfcproject1View::OnRButtonUp(UINT nFlags, CPoint point)
 void Cmfcproject1View::OnGeoPoint()
 {
 	// TODO: Add your command handler code here
-	x = 10.0f;
-	y = 10.0f;
-	Invalidate();
+	PointDialog dlg;
+	dlg.point_x = x;
+	dlg.point_y = y;
+
+	int result = dlg.DoModal(); // Open modal dialog box
+	if (result == IDOK) {
+		x = dlg.point_x;
+		y = dlg.point_y;
+		z = dlg.point_z;
+		Invalidate();
+	}
 }

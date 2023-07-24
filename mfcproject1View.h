@@ -5,6 +5,7 @@
 
 #include <gl/GL.h>
 #include <gl/GLU.h>
+#include "PointDialog.h"
 
 #pragma once
 
@@ -88,7 +89,7 @@ private:
 	BOOL InitializeOpenGL();
 
 	// window coordinates
-	GLfloat x{ 0 }, y{ 0 };
+	GLfloat x{ 0 }, y{ 0 }, z{ 0 };
 
 	int cx, cy;
 	
