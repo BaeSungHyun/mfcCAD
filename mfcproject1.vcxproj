@@ -186,6 +186,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GLprimitive.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="mfcproject1.h" />
     <ClInclude Include="mfcproject1Doc.h" />
@@ -196,6 +197,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GLprimitive.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="mfcproject1.cpp" />
     <ClCompile Include="mfcproject1Doc.cpp" />

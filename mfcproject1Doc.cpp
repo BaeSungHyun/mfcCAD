@@ -31,10 +31,12 @@ END_MESSAGE_MAP()
 Cmfcproject1Doc::Cmfcproject1Doc() noexcept
 {
 	// TODO: add one-time construction code here
+	points = new point[pointCapacity];
 }
 
 Cmfcproject1Doc::~Cmfcproject1Doc()
 {
+	delete[] points;
 }
 
 BOOL Cmfcproject1Doc::OnNewDocument()

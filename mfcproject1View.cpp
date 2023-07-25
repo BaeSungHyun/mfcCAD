@@ -80,9 +80,20 @@ void Cmfcproject1View::OnDraw(CDC* /*pDC*/)
 	::glPopMatrix();
 
 	::glPushMatrix();
-	::glPointSize(10.0f);
+	::glColor3f(0.0f, 0.0f, 0.0f);
+	::glPointSize(1.0f);
 	::glBegin(GL_POINTS);
-	::glVertex3f(x, y, z);
+	for (int i = 0; i < pDoc->pointCapacity; ++i)
+		::glVertex3f(pDoc->points[i].x, pDoc->points[i].y, pDoc->points[i].z);
+	::glEnd();
+	::glPopMatrix();
+
+	::glPushMatrix();
+	::glColor3f(0.0f, 0.0f, 0.0f);
+	::glLineWidth(1.0f);
+	::glBegin(GL_LINES);
+	for (int i = 0; )
+
 	::glEnd();
 	::glPopMatrix();
 
@@ -367,6 +378,8 @@ BOOL Cmfcproject1View::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 void Cmfcproject1View::rotationStepper(GLdouble* temp, GLdouble* matrix) {
 	// Normalize
 	GLdouble norm = sqrt(temp[0] * temp[0] + temp[1] * temp[1]);
+	if (norm == 0)
+		return;
 	temp[0] = temp[0] / norm;
 	temp[1] = temp[1] / norm;
 
@@ -401,6 +414,8 @@ void Cmfcproject1View::rotationStepper(GLdouble* temp, GLdouble* matrix) {
 void Cmfcproject1View::rotateStepper(GLdouble* temp, GLdouble* matrix) {
 	// Normalize
 	GLdouble norm = sqrt(temp[0] * temp[0] + temp[1] * temp[1]);
+	if (norm == 0)
+		return;
 	temp[0] = temp[0] / norm;
 	temp[1] = temp[1] / norm;
 
@@ -527,21 +542,41 @@ void Cmfcproject1View::OnRButtonUp(UINT nFlags, CPoint point)
 	CView::OnRButtonUp(nFlags, point);
 }
 
-
-
-
 void Cmfcproject1View::OnGeoPoint()
 {
 	// TODO: Add your command handler code here
+	Cmfcproject1Doc* pDoc = GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
 	PointDialog dlg;
 	dlg.point_x = x;
 	dlg.point_y = y;
+	dlg.point_z = z;
 
 	int result = dlg.DoModal(); // Open modal dialog box
 	if (result == IDOK) {
 		x = dlg.point_x;
 		y = dlg.point_y;
 		z = dlg.point_z;
-		Invalidate();
+		
+		point* temp = new point[pDoc->pointCapacity + 1];
+		if (pDoc->points != nullptr) {
+			for (size_t i = 0; i < pDoc->pointCapacity; ++i) {
+				temp[i] = pDoc->points[i];
+			}
+			delete[] pDoc->points;
+			pDoc->points = temp;
+		}
+
+		pDoc->points[pDoc->pointCapacity].x = x;
+		pDoc->points[pDoc->pointCapacity].y = y;
+		pDoc->points[pDoc->pointCapacity].z = z;;
+
+		pDoc->pointCapacity += 1;
+
+		pDoc->SetModifiedFlag();
+		pDoc->UpdateAllViews(NULL);
 	}
 }

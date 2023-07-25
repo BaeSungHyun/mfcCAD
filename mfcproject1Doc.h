@@ -6,6 +6,7 @@
 #pragma once
 #include <gl/GL.h>
 #include <gl/GLU.h>
+#include "GLprimitive.h"
 
 class Cmfcproject1Doc : public CDocument
 {
@@ -15,6 +16,12 @@ protected: // create from serialization only
 
 // Attributes
 public:
+	size_t pointCapacity{ 0 };
+	size_t lineCapacity{ 0 };
+
+	point* points;
+
+	
 // Operations
 public:
 
