@@ -32,11 +32,13 @@ Cmfcproject1Doc::Cmfcproject1Doc() noexcept
 {
 	// TODO: add one-time construction code here
 	points = new point[pointCapacity];
+	lines = new Line[lineCapacity];
 }
 
 Cmfcproject1Doc::~Cmfcproject1Doc()
 {
 	delete[] points;
+	delete[] lines;
 }
 
 BOOL Cmfcproject1Doc::OnNewDocument()

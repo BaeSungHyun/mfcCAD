@@ -97,6 +97,11 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>opengl32.lib;glu32.lib</AdditionalDependencies>
+      <LargeAddressAware>true</LargeAddressAware>
+      <HeapReserveSize>8000000</HeapReserveSize>
+      <HeapCommitSize>1000000</HeapCommitSize>
+      <StackReserveSize>8000000</StackReserveSize>
+      <StackCommitSize>1000000</StackCommitSize>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -172,6 +177,11 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>opengl32.lib;glu32.lib</AdditionalDependencies>
+      <LargeAddressAware>true</LargeAddressAware>
+      <HeapReserveSize>8000000</HeapReserveSize>
+      <HeapCommitSize>1000000</HeapCommitSize>
+      <StackReserveSize>8000000</StackReserveSize>
+      <StackCommitSize>1000000</StackCommitSize>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -187,6 +197,7 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="GLprimitive.h" />
+    <ClInclude Include="LineDialog.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="mfcproject1.h" />
     <ClInclude Include="mfcproject1Doc.h" />
@@ -198,6 +209,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GLprimitive.cpp" />
+    <ClCompile Include="LineDialog.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="mfcproject1.cpp" />
     <ClCompile Include="mfcproject1Doc.cpp" />

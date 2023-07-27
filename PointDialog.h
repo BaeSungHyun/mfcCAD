@@ -26,4 +26,5 @@ public:
 	float point_y;
 	afx_msg void OnBnClickedPointErase();
 	float point_z;
+	virtual void OnOK();
 };

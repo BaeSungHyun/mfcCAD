@@ -20,6 +20,7 @@ public:
 	size_t lineCapacity{ 0 };
 
 	point* points;
+	Line* lines;
 
 	
 // Operations

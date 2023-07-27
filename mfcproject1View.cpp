@@ -36,6 +36,7 @@ BEGIN_MESSAGE_MAP(Cmfcproject1View, CView)
 	ON_WM_MOUSEMOVE()
 	ON_WM_RBUTTONUP()
 	ON_COMMAND(ID_GEO_POINT, &Cmfcproject1View::OnGeoPoint)
+	ON_COMMAND(ID_GEO_LINE, &Cmfcproject1View::OnGeoLine)
 END_MESSAGE_MAP()
 
 // Cmfcproject1View construction/destruction
@@ -44,14 +45,15 @@ Cmfcproject1View::Cmfcproject1View() noexcept
 	:m_hRC(0), m_pDC(0), sceneRotate(0), aspect_ratio(0), cx{ 0 }, cy{ 0 }, mouseStart(0, 0)
 {
 	// TODO: add construction code here
-	
+	pLinedlg = NULL;
 	// Initialize rotationMatrix to Identity Matrix
 
 }
 
-Cmfcproject1View::~Cmfcproject1View()
-{
+Cmfcproject1View::~Cmfcproject1View() {
+	delete pLinedlg;
 }
+
 
 BOOL Cmfcproject1View::PreCreateWindow(CREATESTRUCT& cs)
 {
@@ -91,10 +93,15 @@ void Cmfcproject1View::OnDraw(CDC* /*pDC*/)
 	::glPushMatrix();
 	::glColor3f(0.0f, 0.0f, 0.0f);
 	::glLineWidth(1.0f);
-	::glBegin(GL_LINES);
-	for (int i = 0; )
-
+	::glBegin(GL_LINE_STRIP);
+	for (int i = 0; i < pDoc->lineCapacity; ++i) {
+		for (int j = 0; j < pDoc->lines[i].getCapacity(); ++j) {
+			::glVertex3f(pDoc->lines[i].getLineX(j), pDoc->lines[i].getLineY(j), pDoc->lines[i].getLineZ(j));
+		}
+	}
 	::glEnd();
+	//::glBegin(GL_LINES);
+	//for (int i = 0; )
 	::glPopMatrix();
 
 	::glFinish();
@@ -572,11 +579,33 @@ void Cmfcproject1View::OnGeoPoint()
 
 		pDoc->points[pDoc->pointCapacity].x = x;
 		pDoc->points[pDoc->pointCapacity].y = y;
-		pDoc->points[pDoc->pointCapacity].z = z;;
+		pDoc->points[pDoc->pointCapacity].z = z;
 
 		pDoc->pointCapacity += 1;
 
 		pDoc->SetModifiedFlag();
 		pDoc->UpdateAllViews(NULL);
 	}
+}
+
+
+void Cmfcproject1View::OnGeoLine()
+{
+	// TODO: Add your command handler code here
+	if (pLinedlg != NULL) {
+		pLinedlg->SetFocus();
+	}
+	else {
+		pLinedlg = new LineDialog(this); // create new object
+		pLinedlg->pView = this;
+		pLinedlg->createDialog();
+		pLinedlg->lineX = 0;
+		pLinedlg->lineY = 0;
+		pLinedlg->lineZ = 0;
+
+		pLinedlg->Create(IDD_LINE);
+		pLinedlg->ShowWindow(SW_SHOW);
+	}
+
+
 }

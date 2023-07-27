@@ -6,6 +6,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "PointDialog.h"
+#include "LineDialog.h"
 
 #pragma once
 
@@ -37,6 +38,7 @@ void matrixMulti(T* a, T* b) { // save the result inside matrix 'a'
 	for (int i = 0; i < 16; ++i)
 		b[i] = c[i];
 }
+class LineDialog; // 참조할 클래스 선언 - 대체 뭘까?? header를 바꾼것도 아니고 PointDialog는 건들지도 않음
 
 class Cmfcproject1View : public CView
 {
@@ -96,6 +98,7 @@ private:
 	HGLRC m_hRC; // rendering context
 	CDC* m_pDC;
 
+
 	GLfloat sceneRotate;
 	GLdouble aspect_ratio;
 	GLdouble zoom{ 0.0 };
@@ -138,6 +141,9 @@ public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnGeoPoint();
+	afx_msg void OnGeoLine();
+
+	LineDialog* pLinedlg;
 };
 
 #ifndef _DEBUG  // debug version in mfcproject1View.cpp
