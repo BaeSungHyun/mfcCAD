@@ -86,23 +86,18 @@ void Cmfcproject1View::OnDraw(CDC* /*pDC*/)
 	::glPointSize(1.0f);
 	::glBegin(GL_POINTS);
 	for (int i = 0; i < pDoc->pointCapacity; ++i)
-		::glVertex3f(pDoc->points[i].x, pDoc->points[i].y, pDoc->points[i].z);
+		::glVertex3f(pDoc->points[i].getPointX(), pDoc->points[i].getPointY(), pDoc->points[i].getPointZ());
 	::glEnd();
 	::glPopMatrix();
 
 	::glPushMatrix();
 	::glColor3f(0.0f, 0.0f, 0.0f);
 	::glLineWidth(1.0f);
-	::glBegin(GL_LINE_STRIP);
-	for (int i = 0; i < pDoc->lineCapacity; ++i) {
-		for (int j = 0; j < pDoc->lines[i].getCapacity(); ++j) {
-			::glVertex3f(pDoc->lines[i].getLineX(j), pDoc->lines[i].getLineY(j), pDoc->lines[i].getLineZ(j));
-		}
+	for (int j = 0; j < pDoc->lineCapacity; ++j) {
+		pDoc->lines[j].createList();
 	}
-	::glEnd();
-	//::glBegin(GL_LINES);
-	//for (int i = 0; )
 	::glPopMatrix();
+
 
 	::glFinish();
 
@@ -568,19 +563,18 @@ void Cmfcproject1View::OnGeoPoint()
 		y = dlg.point_y;
 		z = dlg.point_z;
 		
-		point* temp = new point[pDoc->pointCapacity + 1];
+		Point* temp = new Point[pDoc->pointCapacity + 1];
 		if (pDoc->points != nullptr) {
 			for (size_t i = 0; i < pDoc->pointCapacity; ++i) {
-				temp[i] = pDoc->points[i];
+				Point newPoint;
+				newPoint.setPoint(x, y, z);
+				temp[i].pushPoint(newPoint);
 			}
 			delete[] pDoc->points;
 			pDoc->points = temp;
 		}
 
-		pDoc->points[pDoc->pointCapacity].x = x;
-		pDoc->points[pDoc->pointCapacity].y = y;
-		pDoc->points[pDoc->pointCapacity].z = z;
-
+		pDoc->points[pDoc->pointCapacity].setPoint(x,y,z);
 		pDoc->pointCapacity += 1;
 
 		pDoc->SetModifiedFlag();

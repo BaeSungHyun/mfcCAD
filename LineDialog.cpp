@@ -38,7 +38,7 @@ void LineDialog::createDialog() {
 	delete[] pDoc->lines; // member variable point* gets deleted which is still connected to 
 	// temp[i] in above line
 	pDoc->lines = temp;
-	pDoc->lineCapacity += 1;
+	++(pDoc->lineCapacity);
 }
 
 void LineDialog::DoDataExchange(CDataExchange* pDX)
@@ -69,14 +69,11 @@ void LineDialog::OnOK()
 	// CDialog::OnOK();
 	// Mandatory to override. 
 	UpdateData(TRUE); // Activate DDX directly and manually
-	
-	point* save = new point;
-	save->x = lineX;
-	save->y = lineY;
-	save->z = lineZ;
 
-	pDoc->lines[pDoc->lineCapacity - 1].pushPoint(*save);
-	delete save;
+	Point newPoint;
+	newPoint.setPoint(lineX, lineY, lineZ);
+
+	pDoc->lines[pDoc->lineCapacity - 1].pushPoint(newPoint);
 
 	pDoc->SetModifiedFlag();
 	pDoc->UpdateAllViews(NULL);

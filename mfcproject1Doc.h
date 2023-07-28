@@ -16,13 +16,12 @@ protected: // create from serialization only
 
 // Attributes
 public:
-	size_t pointCapacity{ 0 };
-	size_t lineCapacity{ 0 };
+	int pointCapacity{ 0 };
+	int lineCapacity{ 0 };
 
-	point* points;
+	Point* points;
 	Line* lines;
 
-	
 // Operations
 public:
 

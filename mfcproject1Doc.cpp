@@ -31,7 +31,8 @@ END_MESSAGE_MAP()
 Cmfcproject1Doc::Cmfcproject1Doc() noexcept
 {
 	// TODO: add one-time construction code here
-	points = new point[pointCapacity];
+	points = new Point[pointCapacity];
+
 	lines = new Line[lineCapacity];
 }
 
@@ -66,6 +67,7 @@ void Cmfcproject1Doc::Serialize(CArchive& ar)
 	else
 	{
 		// TODO: add loading code here
+
 	}
 }
 
