@@ -196,6 +196,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GLpolygon.h" />
     <ClInclude Include="GLprimitive.h" />
     <ClInclude Include="LineDialog.h" />
     <ClInclude Include="MainFrm.h" />
@@ -204,10 +205,12 @@
     <ClInclude Include="mfcproject1View.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PointDialog.h" />
+    <ClInclude Include="RectangleDialog.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GLpolygon.cpp" />
     <ClCompile Include="GLprimitive.cpp" />
     <ClCompile Include="LineDialog.cpp" />
     <ClCompile Include="MainFrm.cpp" />
@@ -221,6 +224,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="PointDialog.cpp" />
+    <ClCompile Include="RectangleDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="mfcproject1.reg" />

@@ -48,6 +48,12 @@
     <ClInclude Include="LineDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RectangleDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLpolygon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="mfcproject1.cpp">
@@ -72,6 +78,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LineDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RectangleDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GLpolygon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

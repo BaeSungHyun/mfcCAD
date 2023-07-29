@@ -44,8 +44,8 @@ void LineDialog::createDialog() {
 void LineDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_LINE_X, lineX);
-	DDX_Text(pDX, IDC_LINE_Y, lineZ);
+	DDX_Text(pDX, IDC_LINE_X, lineZ);
+	DDX_Text(pDX, IDC_LINE_Y, lineX);
 	DDX_Text(pDX, IDC_LINE_Z, lineY);
 }
 
@@ -85,6 +85,21 @@ void LineDialog::OnCancel()
 	// TODO: Add your specialized code here and/or call the base class
 
 	// CDialog::OnCancel();
+	Cmfcproject1Doc* pDoc = pView->GetDocument();
+	ASSERT_VALID(pDoc);
+	if (!pDoc)
+		return;
+
+	// lineCapacity-1 지우는 과정에서, point member data등 careful!
+	if (pDoc->lines[pDoc->lineCapacity - 1].getCapacity() == 1) {
+		Line* temp = new Line[(pDoc->lineCapacity)--];
+		for (int i = 0; i < pDoc->lineCapacity; ++i)
+			temp[i] = pDoc->lines[i];
+		delete[] pDoc->lines;
+		pDoc->lines = temp;
+
+		MessageBox(_T("Two points are required for line"));
+	}
 	DestroyWindow();
 }
 

@@ -37,6 +37,7 @@ BEGIN_MESSAGE_MAP(Cmfcproject1View, CView)
 	ON_WM_RBUTTONUP()
 	ON_COMMAND(ID_GEO_POINT, &Cmfcproject1View::OnGeoPoint)
 	ON_COMMAND(ID_GEO_LINE, &Cmfcproject1View::OnGeoLine)
+	ON_COMMAND(ID_POLY_RECTANGLE, &Cmfcproject1View::OnPolyRectangle)
 END_MESSAGE_MAP()
 
 // Cmfcproject1View construction/destruction
@@ -46,6 +47,7 @@ Cmfcproject1View::Cmfcproject1View() noexcept
 {
 	// TODO: add construction code here
 	pLinedlg = NULL;
+	pRectdlg = NULL;
 	// Initialize rotationMatrix to Identity Matrix
 
 }
@@ -82,21 +84,16 @@ void Cmfcproject1View::OnDraw(CDC* /*pDC*/)
 	::glPopMatrix();
 
 	::glPushMatrix();
-	::glColor3f(0.0f, 0.0f, 0.0f);
-	::glPointSize(1.0f);
-	::glBegin(GL_POINTS);
 	for (int i = 0; i < pDoc->pointCapacity; ++i)
-		::glVertex3f(pDoc->points[i].getPointX(), pDoc->points[i].getPointY(), pDoc->points[i].getPointZ());
-	::glEnd();
+		pDoc->points[i].createList();
 	::glPopMatrix();
 
 	::glPushMatrix();
-	::glColor3f(0.0f, 0.0f, 0.0f);
-	::glLineWidth(1.0f);
 	for (int j = 0; j < pDoc->lineCapacity; ++j) {
 		pDoc->lines[j].createList();
 	}
 	::glPopMatrix();
+
 
 
 	::glFinish();
@@ -163,9 +160,10 @@ BOOL Cmfcproject1View::InitializeOpenGL() {
 		return FALSE;
 	}
 
-	::glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+	::glClearColor(0.9f, 0.9f, 0.9f, 1.0f);
 	::glClearDepth(1.0f);
 	::glEnable(GL_DEPTH_TEST);
+	::glEnable(GL_LINE_SMOOTH);
 
 	sceneRotate = 30.0f;
 
@@ -256,7 +254,7 @@ BOOL Cmfcproject1View::OnEraseBkgnd(CDC* pDC)
 {
 	// TODO: Add your message handler code here and/or call default
 
-	return CView::OnEraseBkgnd(pDC);
+	return TRUE;
 }
 
 
@@ -303,21 +301,22 @@ void Cmfcproject1View::OnSize(UINT nType, int cx, int cy)
 void Cmfcproject1View::ThreeDimAxis() {
 	GLfloat origin[4]{ 0.0f, 0.0f, 0.0f, 1 };
 	GLfloat x2[4]{100.0f, 0.0f, 0.0f, 1}, y2[4]{ 0.0f, 100.0f, 0.0f, 1 }, z2[4]{ 0.0f, 0.0f, 100.0f, 1 };
-	GLfloat xColor[3] = { 1.0f, 0.0f, 0.0f };
-	GLfloat yColor[3] = { 0.0f, 1.0f, 0.0f };
-	GLfloat zColor[3] = { 0.0f, 0.0f, 1.0f };
+	GLfloat xColor[4] = { 0.8f, 0.0f, 0.0f, 0.3f };
+	GLfloat yColor[4] = { 0.0f, 0.8f, 0.0f, 0.3f };
+	GLfloat zColor[4] = { 0.0f, 0.0f, 0.8f, 0.3f };
 
+	::glLineWidth(0.5f);
 	::glBegin(GL_LINES);
 	
-	::glColor3fv(xColor);
+	::glColor4fv(yColor);
 	::glVertex4fv(origin);
 	::glVertex3fv(x2);
 
-	::glColor3fv(yColor);
+	::glColor4fv(zColor);
 	::glVertex4fv(origin);
 	::glVertex4fv(y2);
 
-	::glColor3fv(zColor);
+	::glColor4fv(xColor);
 	::glVertex4fv(origin);
 	::glVertex4fv(z2);
 
@@ -602,4 +601,24 @@ void Cmfcproject1View::OnGeoLine()
 	}
 
 
+}
+
+
+void Cmfcproject1View::OnPolyRectangle()
+{
+	// TODO: Add your command handler code here
+	if (pRectdlg != NULL) {
+		pRectdlg->SetFocus();
+	}
+	else {
+		pRectdlg = new RectangleDialog(this);
+		pRectdlg->pView = this;
+		pRectdlg->rectX = 0;
+		pRectdlg->rectY = 0;
+		pRectdlg->rectZ = 0;
+
+		pRectdlg->Create(IDD_RECTANGLE);
+		pRectdlg->ShowWindow(SW_SHOW);
+	}
+	
 }

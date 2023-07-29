@@ -55,6 +55,13 @@ void Point::setPoint(float newX, float newY, float newZ) {
 	z = newZ;
 }
 
+void Point::createList() {
+	::glPointSize(PointSize);
+	::glColor3fv(color);
+	::glBegin(GL_POINTS);
+	::glVertex3f(getPointX(), getPointY(), getPointZ());
+	::glEnd();
+}
 
 void Point::pushPoint(Point& inputPoint) {
 	x = inputPoint.x;
@@ -66,6 +73,11 @@ void Point::operator=(const Point& old) {
 	x = old.x;
 	y = old.y;
 	z = old.z;
+
+	PointSize = old.PointSize;
+	color[0] = old.color[0];
+	color[1] = old.color[1];
+	color[2] = old.color[2];
 }
  
 
@@ -103,6 +115,8 @@ float Line::getLineZ(int index) const {
 }
 
 void Line::createList() {
+	::glColor3fv(color);
+	::glLineWidth(LineWidth);
 	::glBegin(GL_LINE_STRIP);
 	for (int j = 0; j < capacity; ++j) {
 		::glVertex3f(this->getLineX(j), this->getLineY(j), this->getLineZ(j));
@@ -119,10 +133,61 @@ int Line::getCapacity() const {
 // overlaod assignment operator for 'pointer member data'
 void Line::operator=(const Line& old) {
 	capacity = old.capacity;
+	LineWidth = old.LineWidth;
+	color[0] = old.color[0];
+	color[1] = old.color[1];
+	color[2] = old.color[2];
+
 	Point* temp2 = new Point[capacity];
 	for (int j = 0; j < capacity; ++j) {
 		temp2[j] = old.point[j];
 	}
-	delete[] point;
-	point = temp2;
+	delete[] this->point;
+	this->point = temp2;
 }
+
+GLRectangle::GLRectangle() {
+
+}
+
+GLRectangle::~GLRectangle() {
+	delete[] point;
+	point = nullptr;
+}
+
+void GLRectangle::pushPoint(Point& inputPoint) {
+	Point* temp = new Point[capacity + 1];
+	for (int i = 0; i < capacity; ++i) {
+		temp[i].pushPoint(point[i]);
+	}
+
+	temp[capacity].pushPoint(inputPoint);
+	delete[] point;
+
+	point = temp;
+
+	++capacity;
+}
+
+void GLRectangle::createList() {
+
+}
+
+float GLRectangle::getRectX(int index) const {
+	return point[index].getPointX();
+}
+
+float GLRectangle::getRectY(int index) const {
+	return point[index].getPointY();
+}
+
+float GLRectangle::getRectZ(int index) const {
+	return point[index].getPointZ();
+}
+
+int GLRectangle::getCapacity() const {
+	return capacity;
+}
+
+
+

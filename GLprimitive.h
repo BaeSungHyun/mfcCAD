@@ -26,6 +26,8 @@ public:
 
 	void setPoint(float, float, float);
 
+	void createList();
+
 	void pushPoint(Point&);
 
 	void operator=(const Point&);
@@ -34,6 +36,9 @@ private:
 	float x{ 0 };
 	float y{ 0 };
 	float z{ 0 };
+
+	float PointSize{ 1.0f };
+	float color[3]{ 0.0f, 0.0f, 0.0f };
 };
 
 
@@ -56,6 +61,12 @@ public:
 private:
 	int capacity{ 0 };
 	Point* point{ new Point[capacity] };
+
+	float LineWidth{ 1.0f };
+	float color[3]{ 0.0f, 0.0f, 0.0f };
 };
+
+
+
 
 #endif

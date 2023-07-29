@@ -21,6 +21,7 @@ public:
 
 	Point* points;
 	Line* lines;
+	GLRectangle* rectangles;
 
 // Operations
 public:

@@ -7,6 +7,7 @@
 #include <gl/GLU.h>
 #include "PointDialog.h"
 #include "LineDialog.h"
+#include "RectangleDialog.h"
 
 #pragma once
 
@@ -144,6 +145,8 @@ public:
 	afx_msg void OnGeoLine();
 
 	LineDialog* pLinedlg;
+	RectangleDialog* pRectdlg;
+	afx_msg void OnPolyRectangle();
 };
 
 #ifndef _DEBUG  // debug version in mfcproject1View.cpp
