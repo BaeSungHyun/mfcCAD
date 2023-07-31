@@ -74,6 +74,7 @@ void Cmfcproject1View::OnDraw(CDC* /*pDC*/)
 	if (!pDoc)
 		return;
 
+
 	// TODO: add draw code for native data here
 	::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -91,6 +92,12 @@ void Cmfcproject1View::OnDraw(CDC* /*pDC*/)
 	::glPushMatrix();
 	for (int j = 0; j < pDoc->lineCapacity; ++j) {
 		pDoc->lines[j].createList();
+	}
+	::glPopMatrix();
+
+	::glPushMatrix();
+	for (int i = 0; i < pDoc->rectangleCapacity; ++i) {
+		pDoc->rectangles[i].createList();
 	}
 	::glPopMatrix();
 
@@ -224,6 +231,17 @@ BOOL Cmfcproject1View::SetupViewingTranform() {
 	::glMultMatrixd(rotateMatrix);
 	::glRotatef(sceneRotate, 1.0f, 0.0f, 0.0f);
 	::glRotatef(-45, 0.0f, 1.0f, 0.0f);
+
+	GLfloat light_position[] = { 0.0f, 0.0f, 1.0f, 0.0f };
+	GLfloat light_ambient[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat mat_shininess[] = { 20.0f };
+
+	::glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	::glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
+	::glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+
+	::glEnable(GL_LIGHTING);
+	::glEnable(GL_LIGHT0);
 	// normal 을 어떻게 보관할 수 있을까?
 	return TRUE;
 }
@@ -301,22 +319,23 @@ void Cmfcproject1View::OnSize(UINT nType, int cx, int cy)
 void Cmfcproject1View::ThreeDimAxis() {
 	GLfloat origin[4]{ 0.0f, 0.0f, 0.0f, 1 };
 	GLfloat x2[4]{100.0f, 0.0f, 0.0f, 1}, y2[4]{ 0.0f, 100.0f, 0.0f, 1 }, z2[4]{ 0.0f, 0.0f, 100.0f, 1 };
-	GLfloat xColor[4] = { 0.8f, 0.0f, 0.0f, 0.3f };
-	GLfloat yColor[4] = { 0.0f, 0.8f, 0.0f, 0.3f };
-	GLfloat zColor[4] = { 0.0f, 0.0f, 0.8f, 0.3f };
+	GLfloat xColor[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	GLfloat yColor[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
+	GLfloat zColor[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
 
-	::glLineWidth(0.5f);
+	::glLineWidth(1.0f);
 	::glBegin(GL_LINES);
-	
-	::glColor4fv(yColor);
+	::glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, yColor);
 	::glVertex4fv(origin);
 	::glVertex3fv(x2);
 
-	::glColor4fv(zColor);
+//	::glColor4fv(zColor);
+	::glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, zColor);
 	::glVertex4fv(origin);
 	::glVertex4fv(y2);
 
-	::glColor4fv(xColor);
+//	::glColor4fv(xColor);
+	::glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, xColor);
 	::glVertex4fv(origin);
 	::glVertex4fv(z2);
 
@@ -613,6 +632,7 @@ void Cmfcproject1View::OnPolyRectangle()
 	else {
 		pRectdlg = new RectangleDialog(this);
 		pRectdlg->pView = this;
+		pRectdlg->createDialog();
 		pRectdlg->rectX = 0;
 		pRectdlg->rectY = 0;
 		pRectdlg->rectZ = 0;

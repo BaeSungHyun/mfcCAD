@@ -32,14 +32,15 @@ Cmfcproject1Doc::Cmfcproject1Doc() noexcept
 {
 	// TODO: add one-time construction code here
 	points = new Point[pointCapacity];
-
 	lines = new Line[lineCapacity];
+	rectangles = new GLRectangle[rectangleCapacity];
 }
 
 Cmfcproject1Doc::~Cmfcproject1Doc()
 {
 	delete[] points;
 	delete[] lines;
+	delete[] rectangles;
 }
 
 BOOL Cmfcproject1Doc::OnNewDocument()

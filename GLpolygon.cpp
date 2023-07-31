@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "GLpolygon.h"
-#include "GLprimitive.h"
+
 
 GLpolygon::GLpolygon() {
 
@@ -44,6 +44,37 @@ float GLpolygon::getZ(int index) const {
 	return point[index].getPointZ();
 }
 
+void GLpolygon::setFaceMode(int face, int mode) {
+	switch (face) {
+	case 0:
+		this->face = GL_FRONT;
+		break;
+	case 1:
+		this->face = GL_BACK;
+		break;
+	case 2:
+		this->face = GL_FRONT_AND_BACK;
+		break;
+	}
+
+	switch (mode) {
+	case 0:
+		this->mode = GL_POINT;
+		break;
+	case 1:
+		this->mode = GL_LINE;
+		break;
+	case 2:
+		this->mode = GL_FILL;
+		break;
+	}
+}
+
+void GLpolygon::setColor(float color[3]) {
+	this->color[0] = color[0];
+	this->color[1] = color[1];
+	this->color[2] = color[2];
+}
 // **************************************** // 
 
 GLRectangle::GLRectangle() {
@@ -52,6 +83,16 @@ GLRectangle::GLRectangle() {
 
 GLRectangle::~GLRectangle() {
 	GLpolygon::~GLpolygon();
+}
+
+void GLRectangle::createList() {
+	::glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE,color);
+	::glPolygonMode(face, mode);
+	::glBegin(GL_QUADS);
+	for (int j = 0; j < capacity; ++j) {
+		::glVertex3f(this->getX(j), this->getY(j), this->getZ(j));
+	}
+	::glEnd();
 }
 
 void GLRectangle::setSize(float width, float height) {
@@ -80,29 +121,44 @@ void GLRectangle::setFourCorner(float x, float y, float z, float width, float he
 	case 0: {
 		for (int i = 0; i < 4; ++i) {
 			Point newPoint;
-			if (i == 0)
+			if (i == 0) {
 				newPoint.setPoint(x + width / 2, y + height / 2, z);
-			else if (i == 1)
+				pushPoint(newPoint);
+			}
+			else if (i == 1) {
 				newPoint.setPoint(x + width / 2, y - height / 2, z);
-			else if (i == 2)
+				pushPoint(newPoint);
+			}
+			else if (i == 2) {
 				newPoint.setPoint(x - width / 2, y - height / 2, z);
-			else
+				pushPoint(newPoint);
+			}
+			else {
 				newPoint.setPoint(x - width / 2, y + height / 2, z);
+				pushPoint(newPoint);
+			}
 		}
-
 		break;
 	}
 	case 1: {
 		for (int i = 0; i < 4; ++i) {
 			Point newPoint;
-			if (i == 0)
+			if (i == 0) {
 				newPoint.setPoint(x, y + height / 2, z + width / 2);
-			else if (i == 1)
+				pushPoint(newPoint);
+			}
+			else if (i == 1) {
 				newPoint.setPoint(x, y - height / 2, z + width / 2);
-			else if (i == 2)
+				pushPoint(newPoint);
+			}
+			else if (i == 2) {
 				newPoint.setPoint(x, y - height / 2, z - width / 2);
-			else
+				pushPoint(newPoint);
+			}
+			else {
 				newPoint.setPoint(x, y + height / 2, z - width / 2);
+				pushPoint(newPoint);
+			}
 		}
 
 		break;
@@ -110,14 +166,22 @@ void GLRectangle::setFourCorner(float x, float y, float z, float width, float he
 	case 2: {
 		for (int i = 0; i < 4; ++i) {
 			Point newPoint;
-			if (i == 0)
+			if (i == 0) {
 				newPoint.setPoint(x + width / 2, y, z + height / 2);
-			else if (i == 1)
+				pushPoint(newPoint);
+			}
+			else if (i == 1) {
 				newPoint.setPoint(x - width / 2, y, z + height / 2);
-			else if (i == 2)
+				pushPoint(newPoint);
+			}
+			else if (i == 2) {
 				newPoint.setPoint(x - width / 2, y, z - height / 2);
-			else
+				pushPoint(newPoint);
+			}
+			else {
 				newPoint.setPoint(x + width / 2, y, z - height / 2);
+				pushPoint(newPoint);
+			}
 		}
 
 		break;
@@ -125,4 +189,16 @@ void GLRectangle::setFourCorner(float x, float y, float z, float width, float he
 	}
 
 	setCapacity(4);
+}
+
+void GLRectangle::operator=(const GLRectangle& old) {
+	setCapacity(old.getCapacity());
+
+	Point* temp2 = new Point[getCapacity()];	
+
+	for (int j = 0; j < getCapacity(); ++j) {
+		temp2[j] = old.point[j];
+	}
+	delete[] this->point;
+	this->point = temp2;
 }

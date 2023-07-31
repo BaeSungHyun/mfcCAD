@@ -32,4 +32,10 @@ public:
 	CButton rectNormalX;
 	CButton rectNormalY;
 	CButton rectNormalZ;
+	virtual void OnOK();
+	virtual void OnCancel();
+	virtual void PostNcDestroy();
+	afx_msg void OnBnClickedRectErase();
+
+	void createDialog();
 };

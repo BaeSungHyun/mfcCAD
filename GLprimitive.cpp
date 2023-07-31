@@ -57,7 +57,7 @@ void Point::setPoint(float newX, float newY, float newZ) {
 
 void Point::createList() {
 	::glPointSize(PointSize);
-	::glColor3fv(color);
+	::glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, color);
 	::glBegin(GL_POINTS);
 	::glVertex3f(getPointX(), getPointY(), getPointZ());
 	::glEnd();
@@ -115,7 +115,7 @@ float Line::getLineZ(int index) const {
 }
 
 void Line::createList() {
-	::glColor3fv(color);
+	::glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, color);
 	::glLineWidth(LineWidth);
 	::glBegin(GL_LINE_STRIP);
 	for (int j = 0; j < capacity; ++j) {
@@ -146,48 +146,6 @@ void Line::operator=(const Line& old) {
 	this->point = temp2;
 }
 
-GLRectangle::GLRectangle() {
-
-}
-
-GLRectangle::~GLRectangle() {
-	delete[] point;
-	point = nullptr;
-}
-
-void GLRectangle::pushPoint(Point& inputPoint) {
-	Point* temp = new Point[capacity + 1];
-	for (int i = 0; i < capacity; ++i) {
-		temp[i].pushPoint(point[i]);
-	}
-
-	temp[capacity].pushPoint(inputPoint);
-	delete[] point;
-
-	point = temp;
-
-	++capacity;
-}
-
-void GLRectangle::createList() {
-
-}
-
-float GLRectangle::getRectX(int index) const {
-	return point[index].getPointX();
-}
-
-float GLRectangle::getRectY(int index) const {
-	return point[index].getPointY();
-}
-
-float GLRectangle::getRectZ(int index) const {
-	return point[index].getPointZ();
-}
-
-int GLRectangle::getCapacity() const {
-	return capacity;
-}
 
 
 

@@ -7,6 +7,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "GLprimitive.h"
+#include "GLpolygon.h"
 
 class Cmfcproject1Doc : public CDocument
 {
@@ -18,6 +19,7 @@ protected: // create from serialization only
 public:
 	int pointCapacity{ 0 };
 	int lineCapacity{ 0 };
+	int rectangleCapacity{ 0 };
 
 	Point* points;
 	Line* lines;
